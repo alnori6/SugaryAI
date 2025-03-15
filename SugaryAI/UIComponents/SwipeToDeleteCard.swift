@@ -64,3 +64,7 @@ struct SwipeToDeleteCard: View {
         .opacity(isDeleted ? 0 : 1)
     }
 }
+
+//#Preview {
+//    SwipeToDeleteCard(item: <#T##PantryItem#>, items: <#T##[PantryItem]#>, cardWidth: <#T##CGFloat#>, cardHeight: <#T##CGFloat#>, offset: <#T##CGFloat#>, isDeleted: <#T##Bool#>)
+//}

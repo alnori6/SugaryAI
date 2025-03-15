@@ -45,25 +45,25 @@ struct PantryView: View {
 
                     // MARK: - Scrollable Cards
                     
-//                    ScrollView(showsIndicators: false) {
-//                        VStack(spacing: cardSpacing) {
-//                            ForEach(viewModel.filteredItems(searchText), id: \.id) { item in
-//                                NavigationLink(destination: ProductDetailsView()) {
-//                                    SwipeToDeleteCard(
-//                                        item: item,
-//                                        items: $viewModel.items,
-//                                        cardWidth: cardWidth,
-//                                        cardHeight: cardHeight
-//                                    )
-//                                }
-//                                .padding(.horizontal, pagePadding)
-//                                .offset(x: 10)
-//                            }
-//                        }
-//                        .padding(.top, cardSpacing)
-//                        .padding(.bottom, 100) // extra space for tab bar
-//                    }
-                    //.padding(.top, -10) // ✅ Minimal negative padding works best
+                    ScrollView(showsIndicators: false) {
+                        VStack(spacing: cardSpacing) {
+                            ForEach(viewModel.filteredItems(searchText), id: \.id) { item in
+                                NavigationLink(destination: ProductDetailsView()) {
+                                    SwipeToDeleteCard(
+                                        item: item,
+                                        items: $viewModel.items,
+                                        cardWidth: cardWidth,
+                                        cardHeight: cardHeight
+                                    )
+                                }
+                                .padding(.horizontal, pagePadding)
+                                .offset(x: 10)
+                            }
+                        }
+                        .padding(.top, cardSpacing)
+                        .padding(.bottom, 100) // extra space for tab bar
+                    }
+                    .padding(.top, -10) // ✅ Minimal negative padding works best
 
                 }
 
