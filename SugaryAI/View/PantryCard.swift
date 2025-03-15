@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct PantryCard: View {
-    let item: PantryItem
+    let item: Product
     let cardWidth: CGFloat
     let cardHeight: CGFloat
 
@@ -71,7 +71,7 @@ struct PantryCard: View {
                     // ✅ النص الرئيسي مع إمكانية التحكم في الحجم والموقع
                     Text(item.name)
                         .font(.system(size: textSize, weight: .bold))
-                        .foregroundColor(Color(hex: "#333674"))
+                        .foregroundColor(Color.accentColor)
                         .offset(x: 10, y: -5) // ✅ التحكم في موقع النص
 
                     // ✅ بيانات التغذية
@@ -81,7 +81,7 @@ struct PantryCard: View {
                                 .offset(x: 6, y: 10)
                             Text("\(item.carbs) Carbs")
                                 .font(.system(size: textSize - 5, weight: .medium))
-                                .foregroundColor(Color(hex: "8E8E93"))
+                                .foregroundColor(Color("grayText"))
                                 .offset(x: 3, y: 10)
                         }
 
@@ -90,7 +90,7 @@ struct PantryCard: View {
                                 .offset(x: 11, y: 10)
                             Text("\(item.calories) Calories")
                                 .font(.system(size: textSize - 5, weight: .medium))
-                                .foregroundColor(Color(hex: "#8E8E93"))
+                                .foregroundColor(Color("grayText"))
                                 .offset(x: 9, y: 10)
                         }
                     }
@@ -104,4 +104,27 @@ struct PantryCard: View {
             .shadow(color: Color.black.opacity(0.1), radius: 6, x: 0, y: 4)
         }
     }
+}
+
+
+
+#Preview {
+    PantryCard(
+        item: Product(
+            name: "Banana",
+            company: "Tropical Harvest",
+            calories: 105,
+            servings: 1,
+            glycemicLoadValue: 14, // Medium GL
+            sugar: 14,
+            protein: 1,
+            fat: 0,
+            carbs: 27,
+            image: "banana_image"
+        ),
+        cardWidth: 300,
+        cardHeight: 120
+    )
+    .previewLayout(.sizeThatFits) // Adjusts to fit the preview
+    .padding()
 }

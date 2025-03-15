@@ -76,7 +76,7 @@ struct ProductDetailsView: View {
                             VStack(alignment: .trailing, spacing: 2) {
                                 Text("\(product.calories)")
                                     .font(.system(size: 22, weight: .bold))
-                                    .foregroundColor(Color(hex: "#333674"))
+                                    .foregroundColor(Color.accentColor)
                                     .padding(.bottom, 9)
                                 Text("Cal")
                                     .font(.system(size: 17, weight: .medium))
@@ -168,7 +168,7 @@ struct ProductDetailsView: View {
                             }
                         }) {
                             Image(systemName: "info.circle.fill")
-                                .foregroundColor(Color(hex: "#95B6FF"))
+                                .foregroundColor(Color("bluePurple"))
                         }
                         .padding([.top, .trailing], 12)
                     }
@@ -211,11 +211,11 @@ struct ProductDetailsView: View {
 //                }
             }
             // 2️⃣ Always fixed tab bar
-              VStack {
-                  Spacer()
-                  BottomTabBar()
-              }
-           
+//              VStack {
+//                  Spacer()
+//                  BottomTabBar()
+//              }
+//           
             
              //   .padding(.bottom, -7)
             
@@ -229,7 +229,7 @@ struct ProductDetailsView: View {
                             .font(.system(size: 14, weight: .medium))
                             .foregroundColor(.black)
                             .padding()
-                            .background(Color(hex: "#E8EAF6"))
+                            .background(Color("Color"))
                             .cornerRadius(10)
                             .frame(width: 250)
                             .padding(.top, -400)

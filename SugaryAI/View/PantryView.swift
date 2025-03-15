@@ -28,7 +28,7 @@ struct PantryView: View {
                                 .foregroundColor(.gray)
                         }
                         .padding(8)
-                        .background(Color(hex: "#F2F2F7"))
+                        .background(Color("Color"))
                         .cornerRadius(8)
                         .padding(.horizontal, pagePadding)
 
@@ -68,10 +68,10 @@ struct PantryView: View {
                 }
 
                 // MARK: - Fixed Bottom Tab Bar
-                VStack {
-                    Spacer()
-                    BottomTabBar()
-                }
+//                VStack {
+//                    Spacer()
+//                    BottomTabBar()
+//                }
             }
             .background(Color.white)
             .ignoresSafeArea(.keyboard, edges: .bottom)
@@ -82,14 +82,14 @@ struct PantryView: View {
                     Button(action: {}) {
                         Image(systemName: "line.3.horizontal.decrease.circle")
                             .font(.system(size: 18, weight: .medium))
-                            .foregroundColor(Color(hex: "#636BFF"))
+                            .foregroundColor(Color("purple1"))
                     }
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {}) {
                         Image(systemName: "clock")
                             .font(.system(size: 18, weight: .medium))
-                            .foregroundColor(Color(hex: "#636BFF"))
+                            .foregroundColor(Color("purple1"))
                     }
                 }
             }
