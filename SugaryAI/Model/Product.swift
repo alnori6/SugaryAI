@@ -1,6 +1,25 @@
 import SwiftUI
 import Foundation
+import SwiftData
 
+
+struct Item: Identifiable {
+    var id = UUID()
+//    var name: String
+//    var companyName: String
+//    var protien: Double
+//    var carbohydrates: Double
+//    var fat: Double
+//    var calories: Double
+//    var glaycemicLoad: Double
+    var productImage: UIImage?
+    init(id: UUID = UUID(), productImage: UIImage? = nil) {
+        self.id = id
+        self.productImage = productImage
+    }
+
+    
+}
 
 //Raghad model
 struct SettingsOption: Identifiable {
