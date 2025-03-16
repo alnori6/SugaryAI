@@ -62,11 +62,13 @@ struct BottomTabBar: View {
                 }
                 .tag(Tabs.profile)
             
-            ScanView()
+            CameraView()
+                .ignoresSafeArea()
                 .tabItem {
                     Label("Scan", systemImage: "vial.viewfinder")
                 }
                 .tag(Tabs.scan)
+                .toolbar(.hidden, for: .tabBar)
             
             PantryView()
                 .tabItem {
