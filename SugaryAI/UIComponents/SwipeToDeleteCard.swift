@@ -9,8 +9,8 @@
 import SwiftUI
 
 struct SwipeToDeleteCard: View {
-    let item: PantryItem
-    @Binding var items: [PantryItem]
+    let item: Product
+    @Binding var items: [Product]
     let cardWidth: CGFloat
     let cardHeight: CGFloat
 
@@ -65,6 +65,16 @@ struct SwipeToDeleteCard: View {
     }
 }
 
-//#Preview {
-//    SwipeToDeleteCard(item: <#T##PantryItem#>, items: <#T##[PantryItem]#>, cardWidth: <#T##CGFloat#>, cardHeight: <#T##CGFloat#>, offset: <#T##CGFloat#>, isDeleted: <#T##Bool#>)
-//}
+
+#Preview {
+    @State var sampleItems: [Product] = [
+        Product(name: "Banana", company: "Tropical Harvest", calories: 105, servings: 1, glycemicLoadValue: 14, sugar: 14, protein: 1, fat: 0, carbs: 27, image: "banana_image")
+    ]
+    
+    return SwipeToDeleteCard(
+        item: sampleItems[0],
+        items: $sampleItems,
+        cardWidth: 300,
+        cardHeight: 150
+    )
+}

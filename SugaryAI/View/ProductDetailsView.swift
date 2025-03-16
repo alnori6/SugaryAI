@@ -12,16 +12,16 @@ struct ProductDetailsView: View {
     @State private var badgeOffsetY: CGFloat = 0
     
     @State private var product = Product(
-        name: "Product Name",
-        company: "Company name",
-        calories: 500,
-        servings: 2,
-        glycemicLoadText: "Contains High GL",
-        glycemicLevelColor: .red,
-        sugar: "2g",
-        protein: "7g",
-        fat: "1g",
-        carbs: "50g"
+        name: "Banana",
+        company: "Tropical Harvest",
+        calories: 105,
+        servings: 1,
+        glycemicLoadValue: 14, // Medium GL
+        sugar: 14,
+        protein: 1,
+        fat: 0,
+        carbs: 27,
+        image: "banana_image"
     )
     
     @State private var isEditing = false
@@ -175,10 +175,10 @@ struct ProductDetailsView: View {
                     
                     // MARK: - Nutritional Values
                     HStack(spacing: 8) {
-                        NutritionalValueBadge(icon: "memoji_sugar", value: product.sugar, label: "Sugar", width: 80, height: 80, offsetX: 0, offsetY: 10)
-                        NutritionalValueBadge(icon: "memoji_protein", value: product.protein, label: "Protein", width: 80, height: 80, offsetX: 0, offsetY: 10)
-                        NutritionalValueBadge(icon: "memoji_fat", value: product.fat, label: "Fat", width: 80, height: 80, offsetX: 0, offsetY: 10)
-                        NutritionalValueBadge(icon: "memoji_carbs", value: product.carbs, label: "Carbs", width: 80, height: 80, offsetX: 0, offsetY: 10)
+                        NutritionalValueBadge(icon: "memoji_sugar", value: "\(product.sugar)g", label: "Sugar", width: 80, height: 80, offsetX: 0, offsetY: 10)
+                        NutritionalValueBadge(icon: "memoji_protein", value: "\(product.protein)g", label: "Protein", width: 80, height: 80, offsetX: 0, offsetY: 10)
+                        NutritionalValueBadge(icon: "memoji_fat", value: "\(product.fat)g", label: "Fat", width: 80, height: 80, offsetX: 0, offsetY: 10)
+                        NutritionalValueBadge(icon: "memoji_carbs", value: "\(product.carbs)g", label: "Carbs", width: 80, height: 80, offsetX: 0, offsetY: 10)
                     }
                     .padding(.horizontal)
                     

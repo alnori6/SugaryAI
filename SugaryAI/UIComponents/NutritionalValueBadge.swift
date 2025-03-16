@@ -42,3 +42,17 @@ struct NutritionalValueBadge: View {
         .offset(x: offsetX, y: offsetY)
     }
 }
+
+
+
+#Preview {
+    NutritionalValueBadge(
+        icon: "memoji_sugar",
+        value: "15g",
+        label: "Sugar",
+        width: 80,
+        height: 80,
+        offsetX: 0,
+        offsetY: 10
+    )
+}
