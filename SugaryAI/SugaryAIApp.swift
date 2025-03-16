@@ -16,10 +16,10 @@ struct SugaryAIApp: App {
 //    
     var body: some Scene {
         WindowGroup {
-            NavigationStack {
-                BottomTabBar(selectedTab: .pantry)
-                    .accentColor(Color.accent) // Set SwiftUI global accent color
-            }
+            BottomTabBar(selectedTab: .pantry)
+                .accentColor(Color.accent) // Set SwiftUI global accent color
+                .fontDesign(.rounded)
+                
         }
     }
 }

@@ -3,97 +3,111 @@ import SwiftUI
 struct PantryView: View {
     @StateObject var viewModel = PantryViewModel()
     @State private var searchText = ""
+    
+    @State private var selectedProduct: Product?
+    
+    // ✅ State variables to track filter and history button clicks
+   @State private var showFilterSheet = false
+   @State private var showHistorySheet = false
+    
+    @State private var showDeleteConfirmation = false
+    @State private var selectedIndexSet: IndexSet?
 
-    let pagePadding: CGFloat = 15
-    let cardSpacing: CGFloat = 16
-    let cardWidth: CGFloat = 300
-    let cardHeight: CGFloat = 98
+    func deleteItem(at offsets: IndexSet) {
+        viewModel.items.remove(atOffsets: offsets)
+    }
 
     var body: some View {
-      //  NavigationView {
-             // Color.clear.frame(height: 1) // <-- invisible fix spacer
-
-            ZStack {
-                VStack(spacing: 0) {
-                    // ✅ FIX: Add this to remove extra spacing under navigation bar
-                                //  Color.clear.frame(height: 1) // <-- invisible fix spacer
-                    // MARK: - Search Bar
-                    VStack(spacing: 0) {
-                        HStack {
-                            Image(systemName: "magnifyingglass")
-                                .foregroundColor(.gray)
-                            TextField("Search", text: $searchText)
-                                .foregroundColor(.black)
-                            Image(systemName: "mic.fill")
-                                .foregroundColor(.gray)
-                        }
-                        .padding(8)
-                        .background(Color("Color"))
-                        .cornerRadius(8)
-                        .padding(.horizontal, pagePadding)
-
-                        Rectangle()
-                            .fill(Color.gray.opacity(0.3))
-                            .frame(height: 1)
-                            .padding(.horizontal, pagePadding)
-                            .padding(.top, 8)
-                    }
-                    .padding(.top, 4) // ✅ Clean small top padding instead of negative values
-
-                    //.padding(.top, -8) // ✅ Reduce space below Nav Bar
-
-
-                    // MARK: - Scrollable Cards
-                    
-                    ScrollView(showsIndicators: false) {
-                        VStack(spacing: cardSpacing) {
-                            ForEach(viewModel.filteredItems(searchText), id: \.id) { item in
-                                NavigationLink(destination: ProductDetailsView()) {
-                                    SwipeToDeleteCard(
-                                        item: item,
-                                        items: $viewModel.items,
-                                        cardWidth: cardWidth,
-                                        cardHeight: cardHeight
-                                    )
-                                }
-                                .padding(.horizontal, pagePadding)
-                                .offset(x: 10)
-                            }
-                        }
-                        .padding(.top, cardSpacing)
-                        .padding(.bottom, 100) // extra space for tab bar
-                    }
-                    .padding(.top, -10) // ✅ Minimal negative padding works best
-
-                }
-
-                // MARK: - Fixed Bottom Tab Bar
-//                VStack {
-//                    Spacer()
-//                    BottomTabBar()
+        NavigationStack {
+            
+            //MARK: - Show "Recently Scanned" when history is active
+            //MARK: - WILL WORK ON IT SOON
+//            if showHistorySheet {
+//                VStack(alignment: .leading, spacing: 8) {
+//                    Text("RECENTLY SCANNED")
+//                        .font(.system(size: 14, weight: .bold))
+//                        .foregroundColor(.gray)
+//                        .padding(.horizontal, 16)
+//                    
+//                    ForEach(viewModel.recentlyScanned) { item in
+//                        PantryCard(item: item)
+//                            .padding(.horizontal, 16)
+//                    }
 //                }
-            }
-            .background(Color.white)
-            .ignoresSafeArea(.keyboard, edges: .bottom)
-            .navigationTitle("Pantry")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: {}) {
-                        Image(systemName: "line.3.horizontal.decrease.circle")
-                            .font(.system(size: 18, weight: .medium))
-                            .foregroundColor(Color("purple1"))
+//            }
+            
+            
+            List {
+                ForEach(viewModel.filteredItems(searchText)) { item in // Uses filtered data
+                    Button(action: {
+                        selectedProduct = item // ✅ Set selected item
+                    }) {
+                        PantryCard(item: item)
+//                            .listRowInsets(EdgeInsets(top: 8, leading: 4, bottom: 16, trailing: 4))
                     }
+                    .buttonStyle(PlainButtonStyle()) // ✅ Removes button styling (NO ARROW)
+                    .listRowSeparator(.hidden)
                 }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {}) {
-                        Image(systemName: "clock")
-                            .font(.system(size: 18, weight: .medium))
-                            .foregroundColor(Color("purple1"))
-                    }
+                .onDelete { offsets in
+                   selectedIndexSet = offsets
+                   showDeleteConfirmation = true
+               } // ✅ Swipe left to delete
+                
+            }
+            .listStyle(.plain)
+            
+            .listRowInsets(EdgeInsets(top: 8, leading: 4, bottom: 4, trailing: 4))
+            .searchable(text: $searchText, prompt: "Search")
+            .navigationDestination(item: $selectedProduct) { product in
+                ProductDetailsView(product: product) // ✅ Navigate without arrow
+            }
+            // ✅ Present Filter View
+            .sheet(isPresented: $showFilterSheet) {
+                FilterView()
+                    .presentationDetents([.fraction(0.5)]) //Half-screen height
+                    .presentationDragIndicator(.visible)
+            }
+
+            .actionSheet(isPresented: $showDeleteConfirmation, content: {
+                ActionSheet(title: Text("Are you sure you want to delete this item?\nThis action cannot be undone."), buttons: [
+                    .destructive(Text("Delete"), action: {
+                        if let indexSet = selectedIndexSet {
+                            deleteItem(at: indexSet)
+                        }
+                    }),
+                    .cancel()
+                ])
+            })
+            .toolbar{
+                ToolbarItem(placement: .principal) {
+                    Text("Pantry Items")
+                        .font(.system(size: 30, weight: .bold))
+                        
+                }
+                ToolbarItem(placement: .topBarLeading) {
+                    Button(action: {
+                       showFilterSheet.toggle()
+                   }) {
+                       Image(systemName: showFilterSheet ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
+                           .font(.system(size: 17, weight: .medium))
+                           .foregroundColor(Color.accentColor)
+                           
+                   }
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(action: {
+                       showHistorySheet.toggle()
+                   }) {
+                       Image(systemName: showHistorySheet ? "clock.fill" : "clock")
+                          .font(.system(size: 17, weight: .medium))
+                          
+                          
+                   }
                 }
             }
-     //   }
+            .toolbarBackground(.ultraThinMaterial)
+        }
+        
     }
 }
 

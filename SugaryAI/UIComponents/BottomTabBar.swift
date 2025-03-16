@@ -19,7 +19,7 @@ struct BottomTabBar: View {
         //        appearance.backgroundColor = UIColor.systemBackground // Matches system theme
         
         // Apply Ultra Thin Blur Effect Instead of Background Color
-        let blurEffect = UIBlurEffect(style: .systemUltraThinMaterial)
+        let blurEffect = UIBlurEffect(style: .systemThinMaterial)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 100)
         blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -56,7 +56,7 @@ struct BottomTabBar: View {
     var body: some View {
         TabView(selection: $selectedTab) {
             
-            ProfileView()
+            SettingsView()
                 .tabItem {
                     Label("Profile", systemImage: "person.fill")
                 }
@@ -85,11 +85,6 @@ struct BottomTabBar: View {
 }
 
 // MARK: - Dummy Views for Testing  will be removed
-struct ProfileView: View {
-    var body: some View {
-        Text("Profile View")
-    }
-}
 
 struct ScanView: View {
     var body: some View {

@@ -1,254 +1,214 @@
 import SwiftUI
 
 struct ProductDetailsView: View {
-    @State private var productImageWidth: CGFloat = 220
-    @State private var productImageHeight: CGFloat = 220
-    @State private var productImageOffsetX: CGFloat = 0
-    @State private var productImageOffsetY: CGFloat = 0
-    
-    @State private var badgeWidth: CGFloat = 85
-    @State private var badgeHeight: CGFloat = 90
-    @State private var badgeOffsetX: CGFloat = 0
-    @State private var badgeOffsetY: CGFloat = 0
-    
-    @State private var product = Product(
-        name: "Banana",
-        company: "Tropical Harvest",
-        calories: 105,
-        servings: 1,
-        glycemicLoadValue: 14, // Medium GL
-        sugar: 14,
-        protein: 1,
-        fat: 0,
-        carbs: 27,
-        image: "banana_image"
-    )
     
     @State private var isEditing = false
     @State private var tempName = "Product Name"
     @State private var tempCompany = "Company name"
+    @State private var serving: Int = 1
     @State private var showInfo = false
     
+    let product: Product
+    
+    // calculate the pointer movement
+    func glycemicRotationAngle() -> Double {
+        switch product.glycemicLoad {
+        case .low: return -80  // Pointer shifts towards the green area
+        case .medium: return -23  // Pointer stays neutral
+        case .high: return 30  // Pointer shifts towards red
+        case .veryHigh: return 90 // Pointer moves to extreme red
+        }
+    }
+
     var body: some View {
-        ZStack(alignment: .bottom) {
-            ScrollView {
-                VStack(spacing: 12) {
-//                    // MARK: - Top Navigation Bar
-//                    HStack {
-//                        Spacer()
-//                        Text("Beans")
-//                            .font(.system(size: 20, weight: .bold))
-//                        Spacer()
-//                  
-//                    }
-//                    .padding(.horizontal, 20)
-//                    .padding(.top, -30)
-                    
-                    // Separator Line
-                    Rectangle()
-                        .fill(Color.gray.opacity(0.3))
-                        .frame(height: 1)
-                        .padding(.horizontal)
-                    
-                    // MARK: - Product Image
-                    Image("item.image")
+        
+            ScrollView(){
+                VStack(spacing: 24){
+                    Image(product.image)
                         .resizable()
                         .scaledToFit()
-                        .frame(width: productImageWidth, height: productImageHeight)
-                        .cornerRadius(10)
-                        .offset(x: productImageOffsetX, y: productImageOffsetY)
+                        .clipShape(RoundedRectangle(cornerRadius: 16))
                     
-                    // MARK: - Product Info Section
-                    VStack(alignment: .leading, spacing: 8) {
-                        HStack(alignment: .top) {
-                            if isEditing {
-                                TextField("Product Name", text: $tempName)
-                                    .font(.system(size: 22, weight: .bold))
-                                    .padding(10)
-                                    .background(Color.white)
-                                    .cornerRadius(8)
-                                    .shadow(color: Color.black.opacity(0.1), radius: 2, x: 0, y: 1)
-                            } else {
-                                Text(product.name)
-                                    .font(.system(size: 22, weight: .bold))
-                            }
-                            Spacer()
-                            VStack(alignment: .trailing, spacing: 2) {
-                                Text("\(product.calories)")
-                                    .font(.system(size: 22, weight: .bold))
-                                    .foregroundColor(Color.accentColor)
-                                    .padding(.bottom, 9)
-                                Text("Cal")
-                                    .font(.system(size: 17, weight: .medium))
-                                    .foregroundColor(Color.black)
-                            }
-                        }
-
-                        if isEditing {
-                            TextField("Company name", text: $tempCompany)
-                                .font(.system(size: 16))
-                                .padding()
-                                .background(Color.white)
-                                .cornerRadius(8)
-                                .shadow(color: Color.black.opacity(0.1), radius: 2, x: 0, y: 5)
-                        } else {
+                    //MARK: - product name and company + calorise
+                    HStack(){
+                        VStack(alignment: .leading, spacing: 8){
+                            Text(product.name)
+                                .font(.system(size: 24, weight: .bold))
+                            
                             Text(product.company)
                                 .font(.system(size: 16))
                                 .foregroundColor(.gray)
                         }
-                    }
-                    .padding(.horizontal, 28)
-
-                    Divider()
-
-                    // MARK: - Serving Control
-                    HStack {
-                        Text("Number of serving")
-                            .font(.system(size: 20, weight: .bold))
                         Spacer()
-                        HStack(spacing: 24) {
-                            Button(action: {
-                                if product.servings > 1 { product.servings -= 1 }
-                            }) {
-                                Image(systemName: "minus")
-                                    .foregroundColor(.black)
-                            }
-                            Text("\(product.servings)")
+                        
+                        VStack(){
+                            Text("\(product.calories)")
+                                .font(.system(size: 22, weight: .bold))
+                                .foregroundColor(Color.purple1)
+                            
+                            Text("Cal")
+                                .font(.system(size: 17, weight: .medium))
+                                .foregroundColor(Color.accentColor)
+                        }
+                    }// end hstack
+                    
+                    Divider()
+                    
+                    //MARK: - Number of Serving
+                    HStack {
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Number of Serving")
                                 .font(.system(size: 20, weight: .medium))
-                            Button(action: {
-                                product.servings += 1
-                            }) {
-                                Image(systemName: "plus")
-                                    .foregroundColor(.black)
+                            HStack {
+                                Text("\(serving)")
+                                    .font(.system(size: 16, weight: .bold))
+                                    .foregroundColor(Color.accentColor)
+                                Text("Serving of \(product.servingSize)g size")
+                                    .font(.system(size: 16))
+                                    .foregroundColor(.gray)
                             }
                         }
-                        .padding(.horizontal, 24)
-                        .padding(.vertical, 10)
-                        .background(Color.gray.opacity(0.1))
-                        .cornerRadius(12)
-                    }
-                    .padding(.horizontal, 28)
-
+                        Spacer()
+                        Stepper("", value: $serving, in: 1...100)
+                    }// end hstack
+                    
                     Divider()
                     
                     // MARK: - Glycemic Load Indicator
-                    ZStack(alignment: .topTrailing) {
-                        HStack {
-                            VStack(alignment: .leading, spacing: 8) {
-                                Text("Glycemic Load")
-                                    .font(.system(size: 18, weight: .bold))
-                                Text(product.glycemicLoadText)
-                                    .font(.system(size: 15, weight: .bold))
-                                    .foregroundColor(product.glycemicLevelColor)
-                            }
-                            Spacer()
-                            ZStack {
-                                Image("glycemic_indicator")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 160, height: 88)
-                                
-                                Image("glycemic_pointer")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 50, height: 40)
-                                    .offset(x: 1, y: 19)
-                            }
-                        }
-                        .frame(width: 320, height: 85)
-                        .padding()
-                        .background(Color.white)
-                        .cornerRadius(12)
-                        .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 2)
+                    HStack(){
                         
-                        // Info button
-                        Button(action: {
-                            withAnimation {
-                                showInfo.toggle()
-                            }
-                        }) {
-                            Image(systemName: "info.circle.fill")
-                                .foregroundColor(Color("bluePurple"))
+                        VStack(alignment: .leading, spacing: 8){
+                            Text("Glycemic Load")
+                                .font(.system(size: 20, weight: .bold))
+                            
+                            Text(product.glycemicLoadText)
+                                .font(.system(size: 18, weight: .medium))
+                                .foregroundColor(product.glycemicLevelColor)
+                            
                         }
-                        .padding([.top, .trailing], 12)
+                        
+                        Spacer()
+                        
+                        ZStack {
+                            Image("glycemic_indicator")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 160)
+
+                            Image("glycemic_pointer")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 40, height: 40)
+                                .padding(.top, 30)
+                                .rotationEffect(Angle(degrees: glycemicRotationAngle()), anchor: .bottom)
+//                                .rotationEffect(Angle(degrees: glycemicRotationAngle()), anchor: .bottom)
+                        }
+                        
+                        Spacer()
+                        
+                        VStack(){
+                            Button(action: {
+                                withAnimation{
+                                    showInfo.toggle()
+                                }
+                            }){
+                                Image(systemName: "info.circle.fill")
+                                    .foregroundColor(Color("bluePurple"))
+                            }
+                            .help("It is a measure of how much food raises your blood sugar! The higher it is, the faster the effect!")
+//                            .popover(isPresented: $showInfo, attachmentAnchor: .point(.bottom), arrowEdge: .top) {
+//                                Text("It is a measure of how much food raises your blood sugar! The higher it is, the faster the effect!")
+//                            }
+                            Spacer()
+                        }
                     }
+                    .padding()
+                    .background(Color(.systemBackground))
+                    .cornerRadius(16)
+                    .shadow(color: Color.black.opacity(0.2), radius: 6, x: 0, y: 3)
+                    
+                    Divider()
                     
                     // MARK: - Nutritional Values
-                    HStack(spacing: 8) {
-                        NutritionalValueBadge(icon: "memoji_sugar", value: "\(product.sugar)g", label: "Sugar", width: 80, height: 80, offsetX: 0, offsetY: 10)
-                        NutritionalValueBadge(icon: "memoji_protein", value: "\(product.protein)g", label: "Protein", width: 80, height: 80, offsetX: 0, offsetY: 10)
-                        NutritionalValueBadge(icon: "memoji_fat", value: "\(product.fat)g", label: "Fat", width: 80, height: 80, offsetX: 0, offsetY: 10)
-                        NutritionalValueBadge(icon: "memoji_carbs", value: "\(product.carbs)g", label: "Carbs", width: 80, height: 80, offsetX: 0, offsetY: 10)
+                    HStack() {
+                        NutritionalValueBadge(icon: "🍫", value: "\(product.sugar)g", label: "Sugar")
+                        Spacer()
+                       NutritionalValueBadge(icon: "🥩", value: "\(product.protein)g", label: "Protein")
+                        Spacer()
+                       NutritionalValueBadge(icon: "🧈", value: "\(product.fat)g", label: "Fat")
+                        Spacer()
+                       NutritionalValueBadge(icon: "🍞", value: "\(product.carbs)g", label: "Carbs")
                     }
-                    .padding(.horizontal)
+                    .frame(maxWidth:.infinity)
+                    .padding(16)
                     
-                    Spacer(minLength: 80)
-                }
-                .padding(.top, 10)
-                .padding(.bottom, 2)
-            }
-            .toolbar{
-                ToolbarItem(placement: .navigationBarTrailing)
-                {
-                    Button(action: {
-                        if isEditing {
-                            product.name = tempName
-                            product.company = tempCompany
-                        } else {
-                            tempName = product.name
-                            tempCompany = product.company
+                    Spacer()
+                    
+                    
+                }// end big vstack
+                .padding()
+                .toolbar{
+                    ToolbarItem(placement: .principal){
+                        Text(product.name)
+                            .font(.system(size: 30, weight: .medium))
+                    }
+                    ToolbarItem(placement: .topBarTrailing){
+                        Button(action: {
+                            isEditing.toggle()
+                        }){
+                            Text("Edit")
+                                .font(.system(size: 16, weight: .bold))
+                                .foregroundColor(Color.accentColor)
                         }
-                        isEditing.toggle()
-                    }) {
-                        Text(isEditing ? "Save" : "Edit")
-                            .foregroundColor(Color.blue)
                     }
-                }
+                    
+                } // end toolbar
+                .toolbarBackground(.ultraThinMaterial)
+            }// end scroll view
+            
                 
-//                ToolbarItem(placement: .bottomBar){
-//                    // MARK: - Bottom Tab Bar
-//                    BottomTabBar()
+
+//            
+//            // MARK: - Info Bubble
+//            if showInfo {
+//                VStack {
+//                    Spacer().frame(height: 360)
+//                    HStack {
+//                        Spacer()
+//                        Text("It is a measure of how much food raises your blood sugar! The higher it is, the faster the effect!")
+//                            .font(.system(size: 14, weight: .medium))
+//                            .foregroundColor(.black)
+//                            .padding()
+//                            .background(Color("Color"))
+//                            .cornerRadius(10)
+//                            .frame(width: 250)
+//                            .padding(.top, -400)
+//                        Spacer()
+//                    }
 //                }
-            }
-            // 2️⃣ Always fixed tab bar
-//              VStack {
-//                  Spacer()
-//                  BottomTabBar()
-//              }
-//           
-            
-             //   .padding(.bottom, -7)
-            
-            // MARK: - Info Bubble
-            if showInfo {
-                VStack {
-                    Spacer().frame(height: 360)
-                    HStack {
-                        Spacer()
-                        Text("It is a measure of how much food raises your blood sugar! The higher it is, the faster the effect!")
-                            .font(.system(size: 14, weight: .medium))
-                            .foregroundColor(.black)
-                            .padding()
-                            .background(Color("Color"))
-                            .cornerRadius(10)
-                            .frame(width: 250)
-                            .padding(.top, -400)
-                        Spacer()
-                    }
-                }
-            }
-        }.navigationTitle("Beans")
-            .navigationBarTitleDisplayMode(.inline)
-            .ignoresSafeArea(.keyboard, edges: .bottom) // 🔥 IMPORTANT 🔥
+//            }
+//        }.navigationTitle("Beans")
+//            .navigationBarTitleDisplayMode(.inline)
+//            .ignoresSafeArea(.keyboard, edges: .bottom) // 🔥 IMPORTANT 🔥
 
 
+        
 
     }
 }
 
 // MARK: - Preview
-struct ProductDetailsView_Previews: PreviewProvider {
-    static var previews: some View {
-        ProductDetailsView()
-    }
+#Preview {
+    ProductDetailsView(product: Product(
+        name: "Banana",
+        company: "Tropical Harvest",
+        calories: 105,
+        servingSize: 66,
+        glycemicLoadValue: 14,
+        sugar: 14,
+        protein: 1,
+        fat: 0,
+        carbs: 27,
+        image: "item.image"
+    ))
 }

@@ -1,11 +1,29 @@
 import SwiftUI
+import Foundation
 
-struct Product: Identifiable {
+
+//Raghad model
+struct SettingsOption: Identifiable {
+    let id = UUID()
+    let title: String
+    let iconName: String
+    let actionType: SettingsAction
+}
+
+enum SettingsAction {
+    case contactUs
+    case rateUs
+    case shareApp
+}
+
+
+// improved rasha model
+struct Product: Identifiable, Hashable {
     let id: UUID = UUID()
     var name: String
     var company: String
     var calories: Int
-    var servings: Int
+    var servingSize: Int
     let glycemicLoadValue: Int // important
     var sugar: Int
     var protein: Int
@@ -24,31 +42,11 @@ struct Product: Identifiable {
 }
 
 
-//struct PantryItem: Identifiable {
-//    let id = UUID()
-//    let name: String
-//    let carbs: Int
-//    let calories: Int
-//    let glycemicLoadValue: Int // important
-//    let image: String
-//    
-//    /// ✅ Computed property for glycemic load category (instead of storing text)
-//    var glycemicLoad: GlycemicLoad {
-//        GlycemicLoad.from(value: glycemicLoadValue)
-//    }
-//
-//    /// ✅ UI-Friendly Computed Properties
-//    var glycemicLoadText: String { glycemicLoad.label }
-//    var glycemicLevelColor: Color { glycemicLoad.color }
-//}
-
-
-
 enum GlycemicLoad: Int, CaseIterable {
     case veryHigh = 4
-        case high = 3
-        case medium = 2
-        case low = 1
+    case high = 3
+    case medium = 2
+    case low = 1
     
     // Returns a color based on glycemic level
     var color: Color {
@@ -81,19 +79,3 @@ enum GlycemicLoad: Int, CaseIterable {
     }
     
 }
-
-
-
-
-//enum GlycemicLoad {
-//    case veryHigh, high, medium, low
-//    
-//    var color: Color {
-//        switch self {
-//        case .veryHigh: return Color("deepRed")
-//        case .high: return Color("lightRed")
-//        case .medium: return Color("medium")
-//        case .low: return Color("greenLow")
-//        }
-//    }
-//}
