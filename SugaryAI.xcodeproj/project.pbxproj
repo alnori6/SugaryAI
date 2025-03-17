@@ -396,9 +396,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"SugaryAI/Preview Content\"";
-				DEVELOPMENT_TEAM = 39YZX5T634;
+				DEVELOPMENT_TEAM = 5BDWVP493R;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "This app uses the camera to capture food label and analyze it.\n";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "This app uses the photo library to import the product food label image.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -425,9 +427,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"SugaryAI/Preview Content\"";
-				DEVELOPMENT_TEAM = 39YZX5T634;
+				DEVELOPMENT_TEAM = 5BDWVP493R;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "This app uses the camera to capture food label and analyze it.\n";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "This app uses the photo library to import the product food label image.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

@@ -150,7 +150,7 @@ struct ProductDetailsView: View {
                 .toolbar{
                     ToolbarItem(placement: .principal){
                         Text(product.name)
-                            .font(.system(size: 30, weight: .medium))
+                            .font(.system(size: 17, weight: .medium))
                     }
                     ToolbarItem(placement: .topBarTrailing){
                         Button(action: {

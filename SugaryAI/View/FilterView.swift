@@ -10,8 +10,8 @@ import SwiftUI
 struct FilterView: View {
     
     @Environment(\.dismiss) var dismiss
-    
-    @State private var selectedFilter: GlycemicLoad = .low
+    @Binding var selectedFilter: GlycemicLoad // Use a binding to pass the value back
+
     
     var body: some View {
         NavigationView {
@@ -72,6 +72,6 @@ struct FilterView: View {
     }
 }
 
-#Preview {
-    FilterView()
-}
+//#Preview {
+//    FilterView()
+//}

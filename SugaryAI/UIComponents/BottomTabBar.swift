@@ -62,7 +62,7 @@ struct BottomTabBar: View {
                 }
                 .tag(Tabs.profile)
             
-            ScanView()
+            CameraView()
                 .tabItem {
                     Label("Scan", systemImage: "vial.viewfinder")
                 }
@@ -82,14 +82,6 @@ struct BottomTabBar: View {
         
     }
     
-}
-
-// MARK: - Dummy Views for Testing  will be removed
-
-struct ScanView: View {
-    var body: some View {
-        Text("Scan View")
-    }
 }
 
 
