@@ -3,8 +3,8 @@ import SwiftUI
 struct ProductDetailsView: View {
     
     @State private var isEditing = false
-    @State private var tempName = "Product Name"
-    @State private var tempCompany = "Company name"
+    @State private var tempName = ""
+    @State private var tempCompany = ""
     @State private var serving: Int = 1
     @State private var showInfo = false
     
@@ -22,6 +22,9 @@ struct ProductDetailsView: View {
 
     var body: some View {
         
+        var tempName = product.name
+        var tempCompany = product.company
+        
             ScrollView(){
                 VStack(spacing: 24){
                     Image(product.image)
@@ -32,10 +35,10 @@ struct ProductDetailsView: View {
                     //MARK: - product name and company + calorise
                     HStack(){
                         VStack(alignment: .leading, spacing: 8){
-                            Text(product.name)
+                            Text(tempName)
                                 .font(.system(size: 24, weight: .bold))
                             
-                            Text(product.company)
+                            Text(tempCompany)
                                 .font(.system(size: 16))
                                 .foregroundColor(.gray)
                         }
@@ -63,7 +66,7 @@ struct ProductDetailsView: View {
                                 Text("\(serving)")
                                     .font(.system(size: 16, weight: .bold))
                                     .foregroundColor(Color.accentColor)
-                                Text("Serving of \(product.servingSize)g size")
+                                Text("Serving of \(product.servingSize)g")
                                     .font(.system(size: 16))
                                     .foregroundColor(.gray)
                             }
@@ -101,6 +104,7 @@ struct ProductDetailsView: View {
                                 .frame(width: 40, height: 40)
                                 .padding(.top, 30)
                                 .rotationEffect(Angle(degrees: glycemicRotationAngle()), anchor: .bottom)
+                                .animation(.spring(duration: 0.8), value: glycemicRotationAngle())
 //                                .rotationEffect(Angle(degrees: glycemicRotationAngle()), anchor: .bottom)
                         }
                         
@@ -132,14 +136,13 @@ struct ProductDetailsView: View {
                     // MARK: - Nutritional Values
                     HStack() {
                         NutritionalValueBadge(icon: "🍫", value: "\(product.sugar)g", label: "Sugar")
-                        Spacer()
+                        Spacer().frame(width: 55)
                        NutritionalValueBadge(icon: "🥩", value: "\(product.protein)g", label: "Protein")
-                        Spacer()
+                        Spacer().frame(width: 60)
                        NutritionalValueBadge(icon: "🧈", value: "\(product.fat)g", label: "Fat")
-                        Spacer()
+                        Spacer().frame(width: 64)
                        NutritionalValueBadge(icon: "🍞", value: "\(product.carbs)g", label: "Carbs")
                     }
-                    .frame(maxWidth:.infinity)
                     .padding(16)
                     
                     Spacer()
@@ -168,8 +171,8 @@ struct ProductDetailsView: View {
             
                 
 
-//            
-//            // MARK: - Info Bubble
+            
+            // MARK: - Info Bubble
 //            if showInfo {
 //                VStack {
 //                    Spacer().frame(height: 360)
@@ -187,9 +190,7 @@ struct ProductDetailsView: View {
 //                    }
 //                }
 //            }
-//        }.navigationTitle("Beans")
-//            .navigationBarTitleDisplayMode(.inline)
-//            .ignoresSafeArea(.keyboard, edges: .bottom) // 🔥 IMPORTANT 🔥
+        
 
 
         
@@ -204,7 +205,7 @@ struct ProductDetailsView: View {
         company: "Tropical Harvest",
         calories: 105,
         servingSize: 66,
-        glycemicLoadValue: 14,
+        glycemicIndexValue: 14,
         sugar: 14,
         protein: 1,
         fat: 0,

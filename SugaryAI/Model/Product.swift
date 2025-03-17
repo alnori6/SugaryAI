@@ -37,19 +37,48 @@ enum SettingsAction {
 
 
 // improved rasha model
+//struct Product: Identifiable, Hashable {
+//    let id: UUID = UUID()
+//    var name: String
+//    var company: String
+//    var calories: Int
+//    var servingSize: Int
+//    let glycemicIndexValue: Int // important
+//    var sugar: Int
+//    var protein: Int
+//    var fat: Int
+//    var carbs: Int
+//    let image: String
+//    
+//    /// ✅ Computed property for glycemic load category (instead of storing text)
+//    var glycemicLoad: GlycemicLoad {
+//        GlycemicLoad.from(value: glycemicIndexValue)
+//    }
+//
+//    /// ✅ UI-Friendly Computed Properties
+//    var glycemicLoadText: String { glycemicLoad.label }
+//    var glycemicLevelColor: Color { glycemicLoad.color }
+//}
+
+
 struct Product: Identifiable, Hashable {
     let id: UUID = UUID()
     var name: String
     var company: String
     var calories: Int
     var servingSize: Int
-    let glycemicLoadValue: Int // important
+    let glycemicIndexValue: Int // ✅ Important for GL Calculation
     var sugar: Int
     var protein: Int
     var fat: Int
     var carbs: Int
     let image: String
     
+    /// ✅ Computed property for Glycemic Load calculation
+    var glycemicLoadValue: Int {
+        calculateGlycemicLoad(glycemicIndexValue: glycemicIndexValue, carbs: Double(carbs))
+    }
+
     /// ✅ Computed property for glycemic load category (instead of storing text)
     var glycemicLoad: GlycemicLoad {
         GlycemicLoad.from(value: glycemicLoadValue)
@@ -58,6 +87,12 @@ struct Product: Identifiable, Hashable {
     /// ✅ UI-Friendly Computed Properties
     var glycemicLoadText: String { glycemicLoad.label }
     var glycemicLevelColor: Color { glycemicLoad.color }
+    
+    /// ✅ Function to calculate Glycemic Load
+    func calculateGlycemicLoad(glycemicIndexValue: Int, carbs: Double) -> Int {
+        let glycemicLoad = (Double(glycemicIndexValue) * carbs) / 100.0
+        return Int(round(glycemicLoad)) // ✅ Round to the nearest whole number
+    }
 }
 
 
@@ -90,10 +125,10 @@ enum GlycemicLoad: Int, CaseIterable {
     // Converts a numeric glycemic load value to an enum category
     static func from(value: Int) -> GlycemicLoad {
         switch value {
-        case 21...: return .veryHigh // 🔥 21 and above → Very High
-        case 15...20: return .high    // 🔥 15 to 20 → High
-        case 8...14: return .medium   // 🟡 8 to 14 → Medium
-        default: return .low          // 🟢 0 to 7 → Low
+        case 20...: return .veryHigh  // 🔥 GL ≥ 20 → Very High
+        case 11...19: return .high    // 🔥 GL 11-19 → High
+        case 8...10: return .medium   // 🟡 GL 8-10 → Medium
+        default: return .low          // 🟢 GL 0-7 → Low
         }
     }
     
