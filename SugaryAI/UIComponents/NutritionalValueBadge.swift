@@ -7,7 +7,7 @@ struct NutritionalValueBadge: View {
     
     var body: some View {
         
-        VStack(spacing: 4) {
+        VStack() {
             Text(icon)
                 .font(.system(size: 20))
             
@@ -20,6 +20,7 @@ struct NutritionalValueBadge: View {
                 .foregroundColor(Color.gray)
             
         }
+//        .padding(.vertical, 4)
         .background(
             Image("nutritional_badge")
                 .resizable()

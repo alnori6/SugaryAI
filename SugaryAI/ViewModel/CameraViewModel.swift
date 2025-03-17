@@ -1,3 +1,4 @@
+
 //
 //  CameraViewModel.swift
 //  SugaryAI
@@ -50,3 +51,4 @@ class CameraViewModel: ObservableObject {
            isFlashOn.toggle()
        }
 }// end of CameraViewModel class
+

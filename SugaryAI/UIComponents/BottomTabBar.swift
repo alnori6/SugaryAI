@@ -3,7 +3,7 @@ import SwiftUI
 struct BottomTabBar: View {
     
     @State var selectedTab: Tabs
-    @AppStorage("sidebarCustomizations") var tabViewCustomization: TabViewCustomization
+//    @AppStorage("sidebarCustomizations") var tabViewCustomization: TabViewCustomization
     
     enum Tabs: Equatable, Hashable {
         case profile, scan, pantry
@@ -61,21 +61,26 @@ struct BottomTabBar: View {
                     Label("Profile", systemImage: "person.fill")
                 }
                 .tag(Tabs.profile)
+                .frame(maxWidth: .infinity)
             
+
             CameraView()
                 .tabItem {
                     Label("Scan", systemImage: "vial.viewfinder")
                 }
                 .tag(Tabs.scan)
+                .frame(maxWidth: .infinity)
+//                .toolbar(.hidden, for: .tabBar)
             
             PantryView()
                 .tabItem {
                     Label("Pantry", systemImage: "archivebox.fill")
                 }
                 .tag(Tabs.pantry)
+                .frame(maxWidth: .infinity)
         }
         .tint(Color("AccentColor")) // ✅ Forces SwiftUI to use this color
-        .tabViewCustomization($tabViewCustomization)
+//        .tabViewCustomization($tabViewCustomization)
         .onAppear {
             customizeTabBarAppearance() // ✅ Update UIKit TabBar Styling
         }

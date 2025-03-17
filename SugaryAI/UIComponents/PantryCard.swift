@@ -19,6 +19,7 @@ struct PantryCard: View {
                     // ✅ Left Side Glycemic Indicator
                     Rectangle()
                         .fill(item.glycemicLevelColor) // ✅ Matches the provided image
+
                         .clipShape(RoundedCornerShape(corners: [.topLeft, .bottomLeft], radius: 20))
                         .frame(width: 30) // ✅ Thicker for better visibility
                         .padding(.vertical, -16) // ✅ Matches padding on top & bottom
@@ -38,21 +39,25 @@ struct PantryCard: View {
                             .foregroundColor(Color("purple1")) // Matches the image
 
                         // ✅ Nutritional Info
-                        HStack(spacing: 8) {
-                            Text("🍞 \(item.carbs)g Carbs")
+                        HStack(spacing: 24) {
+                            Text("🍞 \(item.carbs)g \nCarbs")
                                 .font(.system(size: 14, weight: .medium))
                                 .foregroundColor(Color("grayText"))
-
-                            Text("🔥 \(item.calories) Calories")
+                                .multilineTextAlignment(.center)
+                                .lineSpacing(3)
+                            
+                            Text("🔥 \(item.calories) \nCalories")
                                 .font(.system(size: 14, weight: .medium))
                                 .foregroundColor(Color("grayText"))
+                                .multilineTextAlignment(.center)
+                                .lineSpacing(3)
                         }
                     }
                     
                     
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .frame(height: 60)
+                .frame(height: 65)
                 .padding()
                 .background(Color(.systemBackground))
                 .cornerRadius(20)
@@ -87,7 +92,7 @@ struct PantryCard: View {
             company: "Tropical Harvest",
             calories: 105,
             servingSize: 3,
-            glycemicLoadValue: 14, // Medium GL
+            glycemicIndexValue: 14, // Medium GL
             sugar: 14,
             protein: 1,
             fat: 10,
