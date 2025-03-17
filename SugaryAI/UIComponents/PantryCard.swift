@@ -18,7 +18,8 @@ struct PantryCard: View {
                 HStack(spacing: 16) {
                     // ✅ Left Side Glycemic Indicator
                     Rectangle()
-                        .fill(Color(item.glycemicLevelColor)) // ✅ Matches the provided image
+                        .fill(item.glycemicLevelColor) // ✅ Matches the provided image
+
                         .clipShape(RoundedCornerShape(corners: [.topLeft, .bottomLeft], radius: 20))
                         .frame(width: 30) // ✅ Thicker for better visibility
                         .padding(.vertical, -16) // ✅ Matches padding on top & bottom

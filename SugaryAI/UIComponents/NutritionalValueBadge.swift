@@ -16,7 +16,7 @@ struct NutritionalValueBadge: View {
                 .foregroundColor(Color.blue)
             
             Text(label)
-                .font(.system(size: 14, weight: .bold))
+                .font(.system(size: 14, weight: .medium))
                 .foregroundColor(Color.gray)
             
         }
